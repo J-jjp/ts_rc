@@ -1,0 +1,2 @@
+~/MNN/build/MNNConvert -f ONNX --modelFile /home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/onnx/legged.onnx --MNNModel /home/ubuntu/dog/TOE-Dog/legged_qua.mnn --bizCode MNN
+~/MNN/build/MNNConvert -f ONNX --modelFile /home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/onnx/encoder_z_input.onnx --MNNModel /home/ubuntu/dog/TOE-Dog/encoder_z_input_qua.mnn --bizCode MNN
