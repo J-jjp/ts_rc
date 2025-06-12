@@ -56,7 +56,7 @@ def play(args):
     # get the environment and training configuration
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
     # override some parameters for testing
-    env_cfg.env.num_envs = min(env_cfg.env.num_envs,1)
+    env_cfg.env.num_envs = min(env_cfg.env.num_envs,50)
     env_cfg.terrain.num_rows = 10
     env_cfg.terrain.num_cols = 20
     env_cfg.terrain.curriculum = True
@@ -71,7 +71,7 @@ def play(args):
     rospy.init_node('play')
     rospy.Subscriber('/joy', Joy, joy_callback, queue_size=10)
     # prepare environment
-    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/May20_13-43-03_reinforce/model_5500.pt"
+    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/Jun11_17-53-55_reinforce/model_2000.pt"
     env, _ = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
     obs = env.get_observations()  # get initial observations
     obs_history = env.get_observations_history()
@@ -117,11 +117,11 @@ def play(args):
         # obs = obs.detach()
         # latent = latent.detach()
         if joy_cmd[0]>0:
-            env.commands[:, 0] = joy_cmd[0]*3.6
+            env.commands[:, 0] = joy_cmd[0]
         else:
             env.commands[:, 0] = joy_cmd[0]
-        env.commands[:, 1] = joy_cmd[1]*1
-        env.commands[:, 2] = joy_cmd[2]*2
+        env.commands[:, 1] = joy_cmd[1]
+        env.commands[:, 2] = joy_cmd[2]
         actions = policy(obs.detach(), obs_history.detach(), privileged_obs.detach())  # get actions from the policy
         obs, privileged_obs , rews, dones, infos, obs_history = env.step(actions.detach())  # step the environment
         # actions = policy(obs.detach(), obs_history)  # get actions from the policy
