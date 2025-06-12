@@ -34,7 +34,7 @@ from .base_config import BaseConfig
 class LeggedRobotCfg(BaseConfig):
     class env:
 
-        num_envs = 4096
+        num_envs = 4096*2
         num_observations = 45 # proprioceptive
         # if not None a priviledge_obs_buf will be returned by step() (critic
         # obs for assymetric training). None is returned otherwise
@@ -95,10 +95,10 @@ class LeggedRobotCfg(BaseConfig):
         # max_curriculum_yaw = 2.
         curriculum = True
         smooth_max_lin_vel_x = 1
-        smooth_max_lin_vel_y = 1
+        smooth_max_lin_vel_y = 0.5
         non_smooth_max_lin_vel_x =  1
-        non_smooth_max_lin_vel_y = 1
-        max_ang_vel_yaw = 1.
+        non_smooth_max_lin_vel_y = 0.5
+        max_ang_vel_yaw = 0.5
         curriculum_threshold = 0.75
         zero_command_prob=0
         # default: lin_vel_x, lin_vel_y, ang_vel_yaw, heading (in heading mode
@@ -110,8 +110,8 @@ class LeggedRobotCfg(BaseConfig):
 
         class ranges:
             lin_vel_x = [-0.5, 0.5]  # min max [m/s]
-            lin_vel_y = [-0.6, 0.6]  # min max [m/s]
-            ang_vel_yaw = [-0.5, 0.5]    # min max [rad/s]
+            lin_vel_y = [-0.2, 0.2]  # min max [m/s]
+            ang_vel_yaw = [-0.2, 0.2]    # min max [rad/s]
             heading = [-3.14, 3.14]
 
         # class ranges:
@@ -225,8 +225,8 @@ class LeggedRobotCfg(BaseConfig):
     class rewards:
         class scales:
             termination = -0.
-            tracking_lin_vel = 0.5
-            tracking_goal_vel = 1.5
+            tracking_lin_vel = 1.5
+            tracking_goal_vel = 0.5
             tracking_ang_vel = 0.5
             lin_vel_z = -2.0
             ang_vel_xy = -0.065

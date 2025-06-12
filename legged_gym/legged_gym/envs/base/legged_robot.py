@@ -188,7 +188,7 @@ class LeggedRobot(BaseTask):
             #print("x,y:",self.cur_goals.type(),self.env_goal.type())
 
         self.cur_goals[:,1] = self.env_goal[self.terrain_levels,self.terrain_types,1]+8*self.terrain_types
-            
+        
         self.target_pos_rel = self.cur_goals[:, :2] - self.root_states[:, :2]
     # def check_termination(self):
     #     """ Check if environments need to be reset
@@ -1859,7 +1859,8 @@ class LeggedRobot(BaseTask):
         target_vec_norm = self.target_pos_rel / (norm + 1e-5)
         cur_vel = self.root_states[:, 7:9]
         rew = torch.minimum(torch.sum(target_vec_norm * cur_vel, dim=-1), self.commands[:, 0]) / (self.commands[:, 0] + 1e-5)
-        return rew
+
+        return rew*(self.target_pos_rel[:,0]<2)
 
     def _reward_tracking_lin_vel(self):
         # Tracking of linear velocity commands (xy axes)

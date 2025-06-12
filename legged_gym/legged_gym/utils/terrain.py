@@ -226,7 +226,7 @@ class Terrain:
         gap_size = int(gap_size / terrain.horizontal_scale)
         platform_size = int(platform_size / terrain.horizontal_scale)
         goal = np.zeros((2))
-
+        depth = int(0.3 / terrain.vertical_scale)
         center_x = terrain.length // 2
         center_y = terrain.width // 2
         x1 = (terrain.length - platform_size) // 2
@@ -240,7 +240,7 @@ class Terrain:
         self.goals[i,j,:]=goal* terrain.horizontal_scale
         terrain.height_field_raw[
             center_x+terrain_x  : center_x + 3+terrain_x, center_y - 100 : center_y + 100
-        ] = -1000
+        ] = -depth
 
     def add_terrain_to_map(self, terrain, row, col):
         i = row

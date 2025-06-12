@@ -71,7 +71,7 @@ def play(args):
     rospy.init_node('play')
     rospy.Subscriber('/joy', Joy, joy_callback, queue_size=10)
     # prepare environment
-    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/Jun11_17-53-55_reinforce/model_2000.pt"
+    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/Jun12_16-35-07_reinforce/model_1500.pt"
     env, _ = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
     obs = env.get_observations()  # get initial observations
     obs_history = env.get_observations_history()
