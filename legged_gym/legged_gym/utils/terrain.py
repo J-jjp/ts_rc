@@ -31,6 +31,7 @@
 import numpy as np
 from numpy.random import choice
 from scipy import interpolate
+import random
 
 from isaacgym import terrain_utils
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg
@@ -151,6 +152,7 @@ class Terrain:
             terrain_utils.pyramid_sloped_terrain(
                 terrain, slope=slope, platform_size=3.0
             )
+            self.add_roughness(terrain,difficulty)
         elif choice < self.proportions[1]:
             self.terrain_num[1] += 1
             if (
@@ -205,6 +207,8 @@ class Terrain:
                 num_rectangles,
                 platform_size=3.0,
             )
+            self.add_roughness(terrain,difficulty)
+
         elif choice < self.proportions[5]:
             self.terrain_num[5] += 1
             # if (
@@ -259,6 +263,10 @@ class Terrain:
             np.max(terrain.height_field_raw[x1:x2, y1:y2]) * terrain.vertical_scale
         )
         self.env_origins[i, j] = [env_origin_x, env_origin_y, env_origin_z]
+    def add_roughness(self, terrain, difficulty=1):
+        max_height = (self.cfg.height[1] - self.cfg.height[0]) * difficulty + self.cfg.height[0]
+        height = random.uniform(self.cfg.height[0], max_height)
+        terrain_utils.random_uniform_terrain(terrain, min_height=-height, max_height=height, step=0.005, downsampled_scale=self.cfg.downsampled_scale)
 
 
 def gap_terrain(terrain, gap_size, platform_size=1.0):

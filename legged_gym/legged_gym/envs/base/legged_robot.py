@@ -824,22 +824,22 @@ class LeggedRobot(BaseTask):
         if self.cfg.commands.curriculum:
             self.command_ranges["lin_vel_x"][self.fail_ids, 0] = torch.clip(
                 self.command_ranges["lin_vel_x"][self.fail_ids, 0] + 0.25,
-                -self.cfg.commands.smooth_max_lin_vel_x,
-                -1,
+                -self.cfg.commands.non_smooth_max_lin_vel_x,
+                -0.25,
             )
             self.command_ranges["lin_vel_x"][self.fail_ids, 1] = torch.clip(
                 self.command_ranges["lin_vel_x"][self.fail_ids, 1] - 0.25,
-                1,
+                0.25,
                 self.cfg.commands.smooth_max_lin_vel_x,
             )
             self.command_ranges["lin_vel_y"][self.fail_ids, 0] = torch.clip(
                 self.command_ranges["lin_vel_y"][self.fail_ids, 0] + 0.25,
-                -self.cfg.commands.smooth_max_lin_vel_y,
-                -1,
+                -self.cfg.commands.non_smooth_max_lin_vel_y,
+                -0.25,
             )
             self.command_ranges["lin_vel_y"][self.fail_ids, 1] = torch.clip(
                 self.command_ranges["lin_vel_y"][self.fail_ids, 1] - 0.25,
-                1,
+                0.25,
                 self.cfg.commands.smooth_max_lin_vel_y,
             )
 
@@ -1851,7 +1851,7 @@ class LeggedRobot(BaseTask):
     def _reward_hip_limit(self):
         reward = torch.sum(torch.square(self.dof_pos[:,[0,3,6,9]] - self.default_dof_pos[:,[0,3,6,9]]),dim=1)
         # print("hip limit",reward)
-        return reward
+        return reward*self.commands[:, 0]
     def _reward_trot_gait(self):
 
         return torch.sum(torch.square(self.dof_pos[:,[1,2]] - self.dof_pos[:,[10,11]])+

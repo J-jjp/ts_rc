@@ -76,7 +76,8 @@ class LeggedRobotCfg(BaseConfig):
         # terrain_proportions = [0.1, 0.1, 0.35, 0.25, 0.2]
         # terrain_proportions = [0.2, 0.2, 0.1, 0.1, 0.4, 0.0, 0.0, 0.0]
         terrain_proportions = [0.1, 0.2,0.3, 0.2, 0.2]
-
+        height = [0.02, 0.03]
+        downsampled_scale = 0.05
         # trimesh only:
         # slopes above this threshold will be corrected to vertical surfaces
         slope_treshold = 0.75
@@ -90,7 +91,7 @@ class LeggedRobotCfg(BaseConfig):
         curriculum = True
         smooth_max_lin_vel_x = 4
         smooth_max_lin_vel_y = 1
-        non_smooth_max_lin_vel_x = 2.8
+        non_smooth_max_lin_vel_x = 1
         non_smooth_max_lin_vel_y = 1
         max_ang_vel_yaw = 1.5
         curriculum_threshold = 0.75
@@ -103,9 +104,9 @@ class LeggedRobotCfg(BaseConfig):
         heading_command = False  # if true: compute ang vel command from heading error
 
         class ranges:
-            lin_vel_x = [-0.5, 0.5]  # min max [m/s]
-            lin_vel_y = [-0.6, 0.6]  # min max [m/s]
-            ang_vel_yaw = [-0.5, 0.5]    # min max [rad/s]
+            lin_vel_x = [-0.2, 0.2]  # min max [m/s]
+            lin_vel_y = [-0.2, 0.2]  # min max [m/s]
+            ang_vel_yaw = [-2., 2.]    # min max [rad/s]
             heading = [-3.14, 3.14]
 
         # class ranges:
@@ -119,13 +120,7 @@ class LeggedRobotCfg(BaseConfig):
         rot = [0.0, 0.0, 0.0, 1.0]  # x,y,z,w [quat]
         lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
         ang_vel = [0.0, 0.0, 0.0]  # x,y        curriculum = True
-        smooth_max_lin_vel_x = 2.0
-        smooth_max_lin_vel_y = 1.0
-        non_smooth_max_lin_vel_x = 1.0
-        non_smooth_max_lin_vel_y = 1.0
-        max_ang_vel_yaw = 3.0
-        curriculum_threshold = 0.75
-        ang_vel = [0, 0, 0]
+
 
     class control:
         control_type = 'P'  # P: position, V: velocity, T: torques
@@ -235,11 +230,11 @@ class LeggedRobotCfg(BaseConfig):
             collision = -1.
             feet_stumble = -0.2
             trap_static = -2.
-            hip_limit = -1.5
+            hip_limit = -0.75
 
             action_rate = -0.01
             action_smoothness = -0.005
-            stand_still = -0.
+            stand_still = -0.05
 
             dof_pos_limits = -2.0
             dof_vel_limits = -1
@@ -253,8 +248,8 @@ class LeggedRobotCfg(BaseConfig):
         only_positive_rewards = False
         tracking_sigma = 0.2  # tracking reward = exp(-error^2/sigma)
         soft_dof_pos_limit = 0.8  # percentage of urdf limits, values above this limit are penalized
-        soft_dof_vel_limit = 0.85
-        soft_torque_limit = 0.85
+        soft_dof_vel_limit = 0.8
+        soft_torque_limit = 0.8
 
         max_contact_force = 100.  # forces above this value are penalized
 

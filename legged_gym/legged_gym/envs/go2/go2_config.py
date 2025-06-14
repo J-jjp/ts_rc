@@ -43,11 +43,9 @@ class GO2RoughCfg(LeggedRobotCfg):
 
     class rewards(LeggedRobotCfg.rewards):
         soft_dof_pos_limit = 0.8
-        base_height_target = 0.28
+        base_height_target = 0.30
 
-        class scales(LeggedRobotCfg.rewards.scales):
-            torques = -0.0001
-            # dof_pos_limits = -10.0
+
 
 
 class GO2RoughCfgPPO(LeggedRobotCfgPPO):
