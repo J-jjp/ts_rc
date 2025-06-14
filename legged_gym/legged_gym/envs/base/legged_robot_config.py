@@ -54,7 +54,7 @@ class LeggedRobotCfg(BaseConfig):
         mesh_type = 'trimesh'  # "heightfield" # none, plane, heightfield or trimesh
         horizontal_scale = 0.1  # [m]
         vertical_scale = 0.005  # [m]
-        border_size = 25  # [m]
+        border_size = 25  # [m
         curriculum = True
         static_friction = 0.4
         dynamic_friction = 0.4
