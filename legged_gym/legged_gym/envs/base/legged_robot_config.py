@@ -223,10 +223,10 @@ class LeggedRobotCfg(BaseConfig):
             tracking_ang_vel = 0.5
             lin_vel_z = -2.0
             ang_vel_xy = -0.065
-            orientation = -0.0
+            orientation = -0.05
             torques = -1e-4
             power = -1e-5
-            # dof_vel = -1e-4
+            dof_vel = -1e-4
             stumble = -0.02
             feet_regulation = -0.07
             dof_acc = -2.5e-7
@@ -235,7 +235,7 @@ class LeggedRobotCfg(BaseConfig):
             collision = -1.
             feet_stumble = -0.2
             trap_static = -2.
-            hip_limit = -0.5
+            hip_limit = -1.5
 
             action_rate = -0.01
             action_smoothness = -0.005
