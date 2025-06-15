@@ -821,27 +821,27 @@ class LeggedRobot(BaseTask):
         self.env_origins[env_ids] = self.terrain_origins[
             self.terrain_levels[env_ids], self.terrain_types[env_ids]
         ]
-        if self.cfg.commands.curriculum:
-            self.command_ranges["lin_vel_x"][self.fail_ids, 0] = torch.clip(
-                self.command_ranges["lin_vel_x"][self.fail_ids, 0] + 0.25,
-                -self.cfg.commands.non_smooth_max_lin_vel_x,
-                -0.25,
-            )
-            self.command_ranges["lin_vel_x"][self.fail_ids, 1] = torch.clip(
-                self.command_ranges["lin_vel_x"][self.fail_ids, 1] - 0.25,
-                0.25,
-                self.cfg.commands.smooth_max_lin_vel_x,
-            )
-            self.command_ranges["lin_vel_y"][self.fail_ids, 0] = torch.clip(
-                self.command_ranges["lin_vel_y"][self.fail_ids, 0] + 0.25,
-                -self.cfg.commands.non_smooth_max_lin_vel_y,
-                -0.25,
-            )
-            self.command_ranges["lin_vel_y"][self.fail_ids, 1] = torch.clip(
-                self.command_ranges["lin_vel_y"][self.fail_ids, 1] - 0.25,
-                0.25,
-                self.cfg.commands.smooth_max_lin_vel_y,
-            )
+        # if self.cfg.commands.curriculum:
+        #     self.command_ranges["lin_vel_x"][self.fail_ids, 0] = torch.clip(
+        #         self.command_ranges["lin_vel_x"][self.fail_ids, 0] + 0.25,
+        #         -self.cfg.commands.non_smooth_max_lin_vel_x,
+        #         -0.5,
+        #     )
+        #     self.command_ranges["lin_vel_x"][self.fail_ids, 1] = torch.clip(
+        #         self.command_ranges["lin_vel_x"][self.fail_ids, 1] - 0.25,
+        #         0.5,
+        #         self.cfg.commands.smooth_max_lin_vel_x,
+        #     )
+        #     self.command_ranges["lin_vel_y"][self.fail_ids, 0] = torch.clip(
+        #         self.command_ranges["lin_vel_y"][self.fail_ids, 0] + 0.25,
+        #         -self.cfg.commands.non_smooth_max_lin_vel_y,
+        #         -0.5,
+        #     )
+        #     self.command_ranges["lin_vel_y"][self.fail_ids, 1] = torch.clip(
+        #         self.command_ranges["lin_vel_y"][self.fail_ids, 1] - 0.25,
+        #         0.5,
+        #         self.cfg.commands.smooth_max_lin_vel_y,
+        #     )
 
 
     # def update_command_curriculum(self, env_ids):
@@ -882,28 +882,28 @@ class LeggedRobot(BaseTask):
                 success_ids.unsqueeze(1) == self.smooth_slope_idx.unsqueeze(0), dim=1
             )
             slope_ids = success_ids[slope_ids]
-            self.command_ranges["lin_vel_x"][success_ids, 0] -= 0.05
-            self.command_ranges["lin_vel_x"][success_ids, 1] += 0.05
-            self.command_ranges["lin_vel_x"][slope_ids, 0] -= 0.2
-            self.command_ranges["lin_vel_x"][slope_ids, 1] += 0.2
-            self.command_ranges["lin_vel_y"][success_ids, 0] -= 0.05
-            self.command_ranges["lin_vel_y"][success_ids, 1] += 0.05
-            self.command_ranges["lin_vel_y"][slope_ids, 0] -= 0.2
-            self.command_ranges["lin_vel_y"][slope_ids, 1] += 0.2
+            self.command_ranges["lin_vel_x"][success_ids, 0] -= 0.15
+            self.command_ranges["lin_vel_x"][success_ids, 1] += 0.15
+            self.command_ranges["lin_vel_x"][slope_ids, 0] -= 0.25
+            self.command_ranges["lin_vel_x"][slope_ids, 1] += 0.25
+            self.command_ranges["lin_vel_y"][success_ids, 0] -= 0.15
+            self.command_ranges["lin_vel_y"][success_ids, 1] += 0.15
+            self.command_ranges["lin_vel_y"][slope_ids, 0] -= 0.25
+            self.command_ranges["lin_vel_y"][slope_ids, 1] += 0.25
 
             self.command_ranges["lin_vel_x"][self.smooth_slope_idx, :] = torch.clip(
                 self.command_ranges["lin_vel_x"][self.smooth_slope_idx, :],
-                -self.cfg.commands.smooth_max_lin_vel_x,
+                -1,
                 self.cfg.commands.smooth_max_lin_vel_x,
             )
             self.command_ranges["lin_vel_y"][self.smooth_slope_idx, :] = torch.clip(
                 self.command_ranges["lin_vel_y"][self.smooth_slope_idx, :],
-                -self.cfg.commands.smooth_max_lin_vel_y,
+                -1,
                 self.cfg.commands.smooth_max_lin_vel_y,
             )
             self.command_ranges["lin_vel_x"][self.none_smooth_idx, :] = torch.clip(
                 self.command_ranges["lin_vel_x"][self.none_smooth_idx, :],
-                -self.cfg.commands.non_smooth_max_lin_vel_x,
+                -1,
                 self.cfg.commands.non_smooth_max_lin_vel_x,
             )
             self.command_ranges["lin_vel_y"][self.none_smooth_idx, :] = torch.clip(
@@ -1756,7 +1756,7 @@ class LeggedRobot(BaseTask):
         # Tracking of linear velocity commands (xy axes)
         lin_vel_error = torch.sum(torch.square(
             self.commands[:, :2] - self.base_lin_vel[:, :2]), dim=1)
-        # print("vel",self.base_lin_vel[:, :1])
+        print("vel",self.base_lin_vel[:, :1])
         return torch.exp(-lin_vel_error / self.cfg.rewards.tracking_sigma)
 
     def _reward_tracking_ang_vel(self):
@@ -1851,7 +1851,7 @@ class LeggedRobot(BaseTask):
     def _reward_hip_limit(self):
         reward = torch.sum(torch.square(self.dof_pos[:,[0,3,6,9]] - self.default_dof_pos[:,[0,3,6,9]]),dim=1)
         # print("hip limit",reward)
-        return reward*self.commands[:, 0]
+        return reward
     def _reward_trot_gait(self):
 
         return torch.sum(torch.square(self.dof_pos[:,[1,2]] - self.dof_pos[:,[10,11]])+

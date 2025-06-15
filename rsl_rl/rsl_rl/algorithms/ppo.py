@@ -57,7 +57,7 @@ class PPO:
                  desired_kl=0.01,
                  device='cpu',
                  num_proprio_encoder_substeps = 1,
-                 student_reinforcing = False
+                 student_reinforcing = True
                  ):
 
         self.device = device

@@ -236,7 +236,7 @@ if __name__ == '__main__':
                 #     joy_cmd[0] = joy_cmd[0]*3
                 # else:
                 #     joy_cmd[0] = joy_cmd[0]
-                obs[0, 6] = (joy_cmd[0]+command[0])* Sim2simCfg.normalization.obs_scales.lin_vel*3.5
+                obs[0, 6] = (joy_cmd[0]+command[0])* Sim2simCfg.normalization.obs_scales.lin_vel*4
                 obs[0, 7] = (joy_cmd[1] +command[1])* Sim2simCfg.normalization.obs_scales.lin_vel*0.6
                 obs[0, 8] = (joy_cmd[2] +command[2])* Sim2simCfg.normalization.obs_scales.ang_vel*0.8*2
                 obs[0, 9:21] = (q-default_dof_pos) * Sim2simCfg.normalization.obs_scales.dof_pos #g关节角度顺序依据修改为样机

@@ -71,7 +71,7 @@ def play(args):
     rospy.init_node('play')
     rospy.Subscriber('/joy', Joy, joy_callback, queue_size=10)
     # prepare environment
-    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/May20_13-43-03_reinforce/model_5500.pt"
+    path_1 = "/home/ubuntu/isaac/t_s/quadruped_rl_blind_walk/legged_gym/logs/go2_load_teacher_student_phase_model_a/Jun15_10-03-25_reinforce/model_7500.pt"
     env, _ = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
     obs = env.get_observations()  # get initial observations
     obs_history = env.get_observations_history()
@@ -117,7 +117,7 @@ def play(args):
         # obs = obs.detach()
         # latent = latent.detach()
         if joy_cmd[0]>0:
-            env.commands[:, 0] = joy_cmd[0]*3.6
+            env.commands[:, 0] = joy_cmd[0]*3.8
         else:
             env.commands[:, 0] = joy_cmd[0]
         env.commands[:, 1] = joy_cmd[1]*1
